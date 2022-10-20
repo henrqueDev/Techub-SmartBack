@@ -25,15 +25,15 @@ public class TechubStoreApplication {
 	@Bean
 	public CommandLineRunner init(@Autowired ClientRepository clients) {
 		return args -> {
-			System.out.println("Salvando clientes");
+			//System.out.println("Salvando clientes");
             //clients.save(new Client("Fulano"));
             //clients.save(new Client("Outro Cliente"));
-            clients.save(new Client("Dougllas123456"));
+            clients.save(new Client("Sion astroneuta"));
             
-            List<Client> consulta = clients.consultaPorNomeCliente("Dougllas123456");
+            //List<Client> consulta = clients.consultaPorNomeCliente("Dougllas123456");
             //boolean existe = clients.existsByClientName("Dougllas");
             //System.out.println("existe um cliente com o nome Dougllas? " + existe);
-            consulta.forEach(System.out::println);
+            //consulta.forEach(System.out::println);
 		};
 	}
 	

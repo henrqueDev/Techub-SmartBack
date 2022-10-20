@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,8 +25,10 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 	
 	//select c from CLIENTS c where c.CLIENT_NAME like :CLIENT_NAMe
 	
-	@Query (value = "select c from CLIENTS c where c.CLIENT_NAME like :CLIENT_NAME")
+	@Query (value = "select c from Client c where c.clientName like :CLIENT_NAME")
 	List<Client> consultaPorNomeCliente( @Param("CLIENT_NAME") String clientName);
+	
+	
 	
 	boolean existsByClientName(String nome);
 }
