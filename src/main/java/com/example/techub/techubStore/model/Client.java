@@ -16,11 +16,20 @@ public class Client {
 	@Column(name = "id")
 	private Integer id;
 	
-	@Column(name = "CLIENT_NAME")
+	@Column(name = "CLIENT_NAME", length = 100)
 	private String clientName;
 	
+	@Column(name="CPF", length = 11)
+	private String cpf;
+	
+	
+	public Client(Integer id, String clientName, String cpf) {
+		this.id = id;
+		this.clientName = clientName;
+		this.cpf = cpf;
+	}
+
 	public Client(Integer id, String clientName) {
-		super();
 		this.id = id;
 		this.clientName = clientName;
 	}
@@ -42,6 +51,15 @@ public class Client {
 	public void setClientName(String name) {
 		this.clientName = name;
 	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	
 	
 	
 }
