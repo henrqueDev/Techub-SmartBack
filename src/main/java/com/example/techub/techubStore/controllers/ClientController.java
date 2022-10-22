@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.techub.techubStore.model.Client;
 import com.example.techub.techubStore.repository.ClientRepository;
@@ -36,23 +38,16 @@ public class ClientController {
 		this.clientRepository = clientRepository;
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<Client> getClientById( @PathVariable Integer id){
-		Optional<Client> clientFound = clientRepository.findById(id);
-		
-		if(clientFound.isPresent()) {
-			//HttpHeaders headers = new HttpHeaders();
-			return ResponseEntity.ok(clientFound.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	@GetMapping("/{id}")
+	public Client getClientById( @PathVariable Integer id){
+		return clientRepository
+				.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado"));
 	}
 	
 	
 	@GetMapping
-	@ResponseBody
-	public ResponseEntity<List<Client>> find(Client filter) {
+	public List<Client> find(Client filter) {
 		ExampleMatcher matcher = ExampleMatcher
 									.matching()
 									.withIgnoreCase()
@@ -60,20 +55,19 @@ public class ClientController {
 	
 		Example<Client> example = Example.of(filter, matcher);
 		
-		List<Client> clientsFound = clientRepository.findAll(example);
-		return ResponseEntity.ok(clientsFound);
+		return clientRepository.findAll(example);
 		
 	}
 	
 	@PostMapping
-	@ResponseBody
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Client> save( @RequestBody() Client user) {
 		Client clientToSave = clientRepository.save(user);
 		return ResponseEntity.ok(clientToSave);
 	}
 	
 	@DeleteMapping(value="/{id}")
-	@ResponseBody
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Client> delete( @PathVariable Integer id){
 		Optional<Client> user = clientRepository.findById(id);
 		
@@ -88,14 +82,14 @@ public class ClientController {
 	
 	@PutMapping(value="/{id}")
 	@ResponseBody
-	public ResponseEntity<Object> update(@PathVariable Integer id, @RequestBody Client user){
-		return clientRepository
+	public void update(@PathVariable Integer id, @RequestBody Client user){
+		 clientRepository
 				.findById(id)
 				.map( clientExist -> {
 					user.setId(clientExist.getId());
 					clientRepository.save(user);
-					return ResponseEntity.noContent().build();
-		}).orElseGet( () -> ResponseEntity.notFound().build());
+					return clientExist;
+		}).orElseThrow( () ->  new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado") );
 		
 	}
 	
