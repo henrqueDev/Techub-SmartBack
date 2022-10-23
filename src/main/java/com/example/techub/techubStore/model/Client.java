@@ -6,64 +6,78 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CPF;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @Table(name = "CLIENTS", schema = "techub")
-public class Client {
-	
+public class Client extends User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
 	
-	
-	@Column(name = "CLIENT_NAME", length = 100)
+	@Column(name="CLIENT_EMAIL",length=200, unique=true)
 	@NotEmpty
-	private String clientName;
+	@Email
+	private String clientEmail;
 	
-	@Column(name="CPF", length = 11)
+	@Column(name="CLIENT_PASSWORD",length=100, unique=true)
 	@NotEmpty
-	private String cpf;
-	
-	
-	public Client(Integer id, String clientName, String cpf) {
-		this.id = id;
-		this.clientName = clientName;
-		this.cpf = cpf;
-	}
+	@Email
+	private String clientPassword;
 
-	public Client(Integer id, String clientName) {
-		this.id = id;
-		this.clientName = clientName;
-	}
-
-	public Client() {}
 	
-	public Client(String clientName) {
-		this.clientName = clientName;
+	@Builder
+	public Client(Integer id, @NotEmpty String clientName,
+			@NotEmpty @CPF(message = "Informe um CPF valido!") String cpf, String clientEmail,
+			String clientPassword) {
+		super(clientName,cpf);
+		this.clientEmail = clientEmail;
+		this.clientPassword = clientPassword;
+		this.id = id;
+		
 	}
+	
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getClientName() {
-		return clientName;
-	}
-	public void setClientName(String name) {
-		this.clientName = name;
+
+	public String getClientEmail() {
+		return clientEmail;
 	}
 
-	public String getCpf() {
-		return cpf;
+
+	public void setClientEmail(String clientEmail) {
+		this.clientEmail = clientEmail;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public String getClientPassword() {
+		return clientPassword;
 	}
-	
+
+
+	public void setClientPassword(String clientPassword) {
+		this.clientPassword = clientPassword;
+	}
+
+
+	public boolean isAdmin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }

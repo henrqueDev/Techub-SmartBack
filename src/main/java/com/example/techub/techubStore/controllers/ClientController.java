@@ -3,11 +3,14 @@ package com.example.techub.techubStore.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,19 +28,27 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.techub.techubStore.model.Client;
 import com.example.techub.techubStore.repository.ClientRepository;
+import com.example.techub.techubStore.service.impl.ClientServiceImpl;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/clients")
+@RequiredArgsConstructor
 public class ClientController {
 	
-	private ClientRepository clientRepository;
+	private ClientServiceImpl clientService;
+	private PasswordEncoder passwordEncoder;
 	
-	
-	
-	public ClientController(ClientRepository clientRepository) {
-		this.clientRepository = clientRepository;
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Client save(@RequestBody @Valid Client user) {
+		String criptPassword = passwordEncoder.encode(user.getClientPassword());
+		user.setClientPassword(criptPassword);
+		return clientService.save(user);
 	}
 	
+	/*
 	@GetMapping("/{id}")
 	public Client getClientById( @PathVariable Integer id){
 		return clientRepository
@@ -61,7 +72,7 @@ public class ClientController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Client> save( @RequestBody() Client user) {
+	public ResponseEntity<Client> save( @RequestBody @Valid Client user) {
 		Client clientToSave = clientRepository.save(user);
 		return ResponseEntity.ok(clientToSave);
 	}
@@ -92,7 +103,7 @@ public class ClientController {
 		}).orElseThrow( () ->  new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado") );
 		
 	}
-	
+	*/
 	
 	
 }

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -25,10 +26,8 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
 	
 	//select c from CLIENTS c where c.CLIENT_NAME like :CLIENT_NAMe
 	
-	@Query (value = "select c from Client c where c.clientName like :CLIENT_NAME")
-	List<Client> consultaPorNomeCliente( @Param("CLIENT_NAME") String clientName);
-	
-	
-	
-	boolean existsByClientName(String nome);
+	@Query (value = "select c from Client c where c.clientEmail = :CLIENT_EMAIL "
+			+ "and c.clientPassword = :CLIENT_PASSWORD ")
+	Optional<Client> queryLogin( @Param("CLIENT_EMAIL") String clientName, 
+			@Param("CLIENT_PASSWORD") String password);
 }
