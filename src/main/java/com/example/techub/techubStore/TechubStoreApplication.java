@@ -17,23 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.techub.techubStore.model.Client;
 import com.example.techub.techubStore.repository.ClientRepository;
+import com.example.techub.techubStore.service.impl.ClientServiceImpl;
 
 @SpringBootApplication
 public class TechubStoreApplication {
-
-	@Bean
-	public CommandLineRunner init(@Autowired ClientRepository clients) {
-		return args -> {
-			System.out.println("Salvando clientes");
-            //clients.save(new Client("Fulano"));
-            //clients.save(new Client("Outro Cliente"));
-            
-            //List<Client> consulta = clients.consultaPorNomeCliente("Dougllas123456");
-            //boolean existe = clients.existsByClientName("Dougllas");
-            //System.out.println("existe um cliente com o nome Dougllas? " + existe);
-            //consulta.forEach(System.out::println);
-		};
-	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(TechubStoreApplication.class, args);

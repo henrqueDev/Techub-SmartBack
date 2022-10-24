@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.techub.techubStore.model.Client;
+import com.example.techub.techubStore.model.ClientUser;
 import com.example.techub.techubStore.repository.ClientRepository;
 import com.example.techub.techubStore.service.impl.ClientServiceImpl;
 
@@ -39,15 +40,15 @@ public class ClientController {
 	
 	private ClientServiceImpl clientService;
 	private PasswordEncoder passwordEncoder;
-	
+	/*
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Client save(@RequestBody @Valid Client user) {
-		String criptPassword = passwordEncoder.encode(user.getClientPassword());
-		user.setClientPassword(criptPassword);
-		return clientService.save(user);
-	}
-	
+	public Client save(@RequestBody Client user) {
+		String criptPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(criptPassword);
+		System.out.println(user);
+		return UserService.save(user);
+	}*/
 	/*
 	@GetMapping("/{id}")
 	public Client getClientById( @PathVariable Integer id){
