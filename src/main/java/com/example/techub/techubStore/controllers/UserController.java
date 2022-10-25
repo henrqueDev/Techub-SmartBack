@@ -44,8 +44,8 @@ public class UserController {
         try{
         	UserClient usuario = UserClient.builder()
                     .login(credenciais.getLogin())
-                    .userPassword(credenciais.getSenha()).build();
-            this.userService.autenticar(usuario);
+                    .userPassword(credenciais.getUserPassword()).build();
+        	UserDetails usuarioAutenticado = this.userService.autenticar(usuario);
             String token = this.jwtService.gerarToken(usuario);
             return new TokenDTO(usuario.getLogin(), token);
         } catch (UsernameNotFoundException | PasswordNotFoundException e ){

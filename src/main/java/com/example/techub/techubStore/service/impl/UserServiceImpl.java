@@ -30,12 +30,15 @@ public class UserServiceImpl implements UserDetailsService {
 
     public UserDetails autenticar(UserClient user ) throws Exception{
         UserDetails userFound = loadUserByUsername(user.getLogin());
-        boolean senhasBatem = encoder.matches( user.getPassword(), user.getPassword() );
+        System.out.println(user.getPassword() + " AUEEEEEE");
+        System.out.println(userFound.getPassword() + " ueeeeEE");
+        boolean senhasBatem = encoder.matches(user.getPassword(), userFound.getPassword());
         if(senhasBatem){
             return userFound;
+        }else {
+        	throw new Exception();
         }
 
-        throw new Exception();
     }
 
     @Override
