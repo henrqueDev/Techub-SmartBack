@@ -26,10 +26,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.techub.techubStore.model.Client;
-import com.example.techub.techubStore.model.ClientUser;
-import com.example.techub.techubStore.repository.ClientRepository;
-import com.example.techub.techubStore.service.impl.ClientServiceImpl;
+import com.example.techub.techubStore.model.ClientTechub;
+import com.example.techub.techubStore.repository.ClientTechubRepository;
+import com.example.techub.techubStore.service.impl.ClientTechubServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,74 +36,62 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
+
+	private ClientTechubRepository clientRepository;
 	
-	private ClientServiceImpl clientService;
-	private PasswordEncoder passwordEncoder;
-	/*
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public Client save(@RequestBody Client user) {
-		String criptPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(criptPassword);
-		System.out.println(user);
-		return UserService.save(user);
-	}*/
-	/*
-	@GetMapping("/{id}")
-	public Client getClientById( @PathVariable Integer id){
-		return clientRepository
-				.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado"));
-	}
-	
-	
-	@GetMapping
-	public List<Client> find(Client filter) {
-		ExampleMatcher matcher = ExampleMatcher
-									.matching()
-									.withIgnoreCase()
-									.withStringMatcher( ExampleMatcher.StringMatcher.STARTING);
-	
-		Example<Client> example = Example.of(filter, matcher);
-		
-		return clientRepository.findAll(example);
-		
-	}
-	
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Client> save( @RequestBody @Valid Client user) {
-		Client clientToSave = clientRepository.save(user);
-		return ResponseEntity.ok(clientToSave);
-	}
-	
-	@DeleteMapping(value="/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<Client> delete( @PathVariable Integer id){
-		Optional<Client> user = clientRepository.findById(id);
-		
-		if(user.isPresent()) {
-			clientRepository.delete( user.get() );
-			return ResponseEntity.noContent().build();
-		}
-		
-		return ResponseEntity.notFound().build();
-		
-	}
-	
-	@PutMapping(value="/{id}")
-	@ResponseBody
-	public void update(@PathVariable Integer id, @RequestBody Client user){
-		 clientRepository
-				.findById(id)
-				.map( clientExist -> {
-					user.setId(clientExist.getId());
-					clientRepository.save(user);
-					return clientExist;
-		}).orElseThrow( () ->  new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado") );
-		
-	}
-	*/
+	 @GetMapping("{id}")
+	    public ClientTechub getClienteById( @PathVariable Integer id ){
+	        return clientRepository
+	                .findById(id)
+	                .orElseThrow(() ->
+	                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+	                                "Cliente não encontrado"));
+	    }
+
+	    @PostMapping
+	    @ResponseStatus(HttpStatus.CREATED)
+	    public ClientTechub save( @RequestBody @Valid ClientTechub cliente ){
+	        return clientRepository.save(cliente);
+	    }
+
+	    @DeleteMapping("{id}")
+	    @ResponseStatus(HttpStatus.NO_CONTENT)
+	    public void delete( @PathVariable Integer id ){
+	        clientRepository.findById(id)
+	                .map( cliente -> {
+	                    clientRepository.delete(cliente );
+	                    return cliente;
+	                })
+	                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+	                        "Cliente não encontrado") );
+
+	    }
+
+	    @PutMapping("{id}")
+	    @ResponseStatus(HttpStatus.NO_CONTENT)
+	    public void update( @PathVariable Integer id,
+	                        @RequestBody @Valid ClientTechub cliente ){
+	        clientRepository
+	                .findById(id)
+	                .map( clienteExistente -> {
+	                    cliente.setId(clienteExistente.getId());
+	                    clientRepository.save(cliente);
+	                    return clienteExistente;
+	                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+	                    "Cliente não encontrado") );
+	    }
+
+	    @GetMapping
+	    public List<ClientTechub> find( ClientTechub filtro ){
+	        ExampleMatcher matcher = ExampleMatcher
+	                                    .matching()
+	                                    .withIgnoreCase()
+	                                    .withStringMatcher(
+	                                            ExampleMatcher.StringMatcher.CONTAINING );
+
+	        Example<ClientTechub> example = Example.of(filtro, matcher);
+	        return clientRepository.findAll(example);
+	    }
 	
 	
 }

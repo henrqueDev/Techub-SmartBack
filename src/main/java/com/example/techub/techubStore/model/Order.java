@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Order {
 	private Integer id;
-	private Client client;
+	private ClientTechub client;
 	private LocalDate order_date;
 	
 	public Integer getId() {
@@ -13,10 +13,10 @@ public class Order {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Client getClient() {
+	public ClientTechub getClient() {
 		return client;
 	}
-	public void setClient(Client client) {
+	public void setClient(ClientTechub client) {
 		this.client = client;
 	}
 	public LocalDate getOrder_date() {

@@ -21,19 +21,21 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "users")
-public class ClientUser {
+public class UserClient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column
+    @Column(name="login", length=100, unique=true)
     @NotEmpty
     private String login;
-    @Column
+    
+    @Column(name="user_password", length=100, unique=true)
     @NotEmpty
-    private String password;
-    @Column
-    private boolean admin;
+    private String userPassword;
+    
+    @Column(name="user_admin")
+    private boolean userAdmin;
     
 	public Integer getId() {
 		return id;
@@ -48,16 +50,16 @@ public class ClientUser {
 		this.login = login;
 	}
 	public String getPassword() {
-		return password;
+		return userPassword;
 	}
 	public void setPassword(String password) {
-		this.password = password;
+		this.userPassword = password;
 	}
 	public boolean isAdmin() {
-		return admin;
+		return userAdmin;
 	}
 	public void setAdmin(boolean admin) {
-		this.admin = admin;
+		this.userAdmin = admin;
 	}
 
     

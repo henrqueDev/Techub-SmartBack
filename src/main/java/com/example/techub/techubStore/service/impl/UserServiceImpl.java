@@ -9,29 +9,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.techub.techubStore.model.ClientUser;
-import com.example.techub.techubStore.repository.ClientUserRepository;
+import com.example.techub.techubStore.model.UserClient;
+import com.example.techub.techubStore.repository.UserRepository;
 
 import java.util.StringJoiner;
 
 @Service
-public class ClientUserServiceImpl implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder encoder;
 
     @Autowired
-    private ClientUserRepository repository;
+    private UserRepository repository;
 
     @Transactional
-    public ClientUser save(ClientUser user){
+    public UserClient save(UserClient user){
         return repository.save(user);
     }
 
-    public UserDetails autenticar(ClientUser user ) throws Exception{
+    public UserDetails autenticar(UserClient user ) throws Exception{
         UserDetails userFound = loadUserByUsername(user.getLogin());
         boolean senhasBatem = encoder.matches( user.getPassword(), user.getPassword() );
-
         if(senhasBatem){
             return userFound;
         }
@@ -41,7 +40,7 @@ public class ClientUserServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ClientUser usuario = repository.findByLogin(username)
+        UserClient usuario = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
 
         String[] roles = usuario.isAdmin() ?

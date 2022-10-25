@@ -13,14 +13,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.techub.techubStore.service.impl.ClientUserServiceImpl;
-
+import com.example.techub.techubStore.service.impl.UserServiceImpl;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
-    private ClientUserServiceImpl usuarioService;
+    private UserServiceImpl usuarioService;
 
-    public JwtAuthFilter( JwtService jwtService, ClientUserServiceImpl usuarioService ) {
+    public JwtAuthFilter( JwtService jwtService, UserServiceImpl usuarioService ) {
         this.jwtService = jwtService;
         this.usuarioService = usuarioService;
     }

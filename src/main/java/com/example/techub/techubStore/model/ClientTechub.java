@@ -6,27 +6,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import org.hibernate.validator.constraints.br.CPF;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Data
 @NoArgsConstructor
-@SuperBuilder(toBuilder = true)
+@AllArgsConstructor
+@Builder
+@Getter
 @Table(name = "CLIENTS", schema = "techub")
-public class Client{
+public class ClientTechub{
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
+	
+	@Column(name="CLIENT_NAME")
+	private String clientName;
 	
 	@Column(name = "CLIENT_CPF",length=11, unique=true)
 	@NotEmpty
@@ -39,6 +42,5 @@ public class Client{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 	
 }
