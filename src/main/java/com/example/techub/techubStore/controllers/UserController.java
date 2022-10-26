@@ -1,10 +1,13 @@
 package com.example.techub.techubStore.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +33,13 @@ public class UserController {
     private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    
+    @GetMapping
+    public List<UserClient> getAllUsers() {
+    	return this.userService.getAll();
+    }
+    
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserClient salvar( @RequestBody @Valid UserClient usuario ){

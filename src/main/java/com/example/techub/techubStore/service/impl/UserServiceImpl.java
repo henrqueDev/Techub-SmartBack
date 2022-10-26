@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.techub.techubStore.model.UserClient;
 import com.example.techub.techubStore.repository.UserRepository;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 @Service
@@ -22,6 +23,10 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+    
+    public List<UserClient> getAll() {
+    	return this.repository.findAll();
+    }
 
     @Transactional
     public UserClient save(UserClient user){
@@ -40,6 +45,8 @@ public class UserServiceImpl implements UserDetailsService {
         }
 
     }
+   
+    
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
