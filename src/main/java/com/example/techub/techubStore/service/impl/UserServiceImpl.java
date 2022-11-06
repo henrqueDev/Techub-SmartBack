@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserDetailsService {
     private UserRepository repository;
     
     public List<UserClient> getAll() {
-    	return this.repository.findAll();
+    	return this.repository.findAllUsers();
     }
 
     @Transactional

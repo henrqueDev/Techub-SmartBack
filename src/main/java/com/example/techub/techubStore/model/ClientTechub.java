@@ -21,26 +21,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @Table(name = "CLIENTS", schema = "techub")
-public class ClientTechub{
-	
+public class ClientTechub {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name="CLIENT_NAME")
+
+	@Column(name = "CLIENT_NAME")
 	private String clientName;
-	
-	@Column(name = "CLIENT_CPF",length=11, unique=true)
+
+	@Column(name = "CLIENT_CPF", length = 11, unique = true)
 	@NotEmpty
 	private String cpf;
-	
-	
-
 
 	public boolean isAdmin() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 }
