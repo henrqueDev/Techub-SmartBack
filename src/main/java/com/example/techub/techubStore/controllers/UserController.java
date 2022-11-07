@@ -35,7 +35,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com")
+    @CrossOrigin(origins = "*")
     @GetMapping
     public List<UserClient> getAllUsers() {
         return this.userService.getAll();
