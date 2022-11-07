@@ -35,13 +35,13 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com")
+    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com/")
     @GetMapping
     public List<UserClient> getAllUsers() {
         return this.userService.getAll();
     }
 
-    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com")
+    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com/")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserClient salvar(@RequestBody @Valid UserClient user) {
@@ -50,7 +50,7 @@ public class UserController {
         return this.userService.save(user);
     }
 
-    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com")
+    @CrossOrigin(origins = "https://techub-smartfront.herokuapp.com/")
     @PostMapping("/auth")
     public TokenDTO autenticar(@RequestBody CredentialsDTO credentials) throws Exception {
         try {
