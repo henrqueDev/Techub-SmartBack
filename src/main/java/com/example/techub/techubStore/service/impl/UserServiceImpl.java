@@ -23,43 +23,40 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
-    
+
     public List<UserClient> getAll() {
-    	return this.repository.findAllUsers();
+        return this.repository.findAll();
     }
 
     @Transactional
-    public UserClient save(UserClient user){
+    public UserClient save(UserClient user) {
         return repository.save(user);
     }
 
-    public UserDetails autenticar(UserClient user ) throws Exception{
+    public UserDetails autenticate(UserClient user) throws Exception {
         UserDetails userFound = loadUserByUsername(user.getLogin());
         System.out.println(user.getPassword() + " AUEEEEEE");
         System.out.println(userFound.getPassword() + " ueeeeEE");
-        boolean senhasBatem = encoder.matches(user.getPassword(), userFound.getPassword());
-        if(senhasBatem){
+        boolean passwordsMatches = encoder.matches(user.getPassword(), userFound.getPassword());
+        if (passwordsMatches) {
             return userFound;
-        }else {
-        	throw new Exception();
+        } else {
+            throw new Exception();
         }
 
     }
-   
-    
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserClient usuario = repository.findByLogin(username)
+        UserClient user = repository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
 
-        String[] roles = usuario.isAdmin() ?
-                new String[]{"ADMIN", "USER"} : new String[]{"USER"};
+        String[] roles = user.isAdmin() ? new String[] { "ADMIN", "USER" } : new String[] { "USER" };
 
         return User
                 .builder()
-                .username(usuario.getLogin())
-                .password(usuario.getPassword())
+                .username(user.getLogin())
+                .password(user.getPassword())
                 .roles(roles)
                 .build();
     }

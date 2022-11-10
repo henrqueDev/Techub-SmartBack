@@ -17,14 +17,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
 public class JwtService {
-	
-	@Value("${security.jwt.expiracao}")
+
+    @Value("${security.jwt.expiracao}")
     private String expiracao;
 
     @Value("${security.jwt.chave-assinatura}")
-    private String chaveAssinatura;
+    private String signingKey;
 
-    public String gerarToken( UserClient usuario ){
+    public String generateToken(UserClient usuario) {
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
@@ -34,32 +34,31 @@ public class JwtService {
                 .builder()
                 .setSubject(usuario.getLogin())
                 .setExpiration(data)
-                .signWith( SignatureAlgorithm.HS512, chaveAssinatura )
+                .signWith(SignatureAlgorithm.HS512, signingKey)
                 .compact();
     }
 
-    private Claims obterClaims( String token ) throws ExpiredJwtException {
+    private Claims getClaims(String token) throws ExpiredJwtException {
         return Jwts
-                 .parser()
-                 .setSigningKey(chaveAssinatura)
-                 .parseClaimsJws(token)
-                 .getBody();
+                .parser()
+                .setSigningKey(signingKey)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public boolean tokenValido( String token ){
-        try{
-            Claims claims = obterClaims(token);
+    public boolean validToken(String token) {
+        try {
+            Claims claims = getClaims(token);
             Date dataExpiracao = claims.getExpiration();
-            LocalDateTime data =
-                    dataExpiracao.toInstant()
-                            .atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime data = dataExpiracao.toInstant()
+                    .atZone(ZoneId.systemDefault()).toLocalDateTime();
             return !LocalDateTime.now().isAfter(data);
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public String obterLoginUsuario(String token) throws ExpiredJwtException{
-        return (String) obterClaims(token).getSubject();
+    public String getUserLogin(String token) throws ExpiredJwtException {
+        return (String) getClaims(token).getSubject();
     }
 }

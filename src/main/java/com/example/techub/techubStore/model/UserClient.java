@@ -64,7 +64,11 @@ public class UserClient {
 		return userAdmin;
 	}
 
-	public void setAdmin(boolean admin) {
+	public boolean getUserAdmin() {
+		return this.userAdmin;
+	}
+
+	public void setUserAdmin(boolean admin) {
 		this.userAdmin = admin;
 	}
 
