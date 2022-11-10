@@ -14,14 +14,15 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.techub.techubStore.service.impl.UserServiceImpl;
+
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private JwtService jwtService;
-    private UserServiceImpl usuarioService;
+    private UserServiceImpl userService;
 
-    public JwtAuthFilter( JwtService jwtService, UserServiceImpl usuarioService ) {
+    public JwtAuthFilter(JwtService jwtService, UserServiceImpl userService) {
         this.jwtService = jwtService;
-        this.usuarioService = usuarioService;
+        this.userService = userService;
     }
 
     @Override
@@ -32,18 +33,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authorization = httpServletRequest.getHeader("Authorization");
 
-        if( authorization != null && authorization.startsWith("Bearer")){
+        if (authorization != null && authorization.startsWith("Bearer")) {
             String token = authorization.split(" ")[1];
-            boolean isValid = jwtService.tokenValido(token);
+            boolean isValid = jwtService.validToken(token);
 
-            if(isValid){
-                String loginUsuario = jwtService.obterLoginUsuario(token);
-                UserDetails usuario = usuarioService.loadUserByUsername(loginUsuario);
-                UsernamePasswordAuthenticationToken user = new
-                        UsernamePasswordAuthenticationToken(usuario,null,
-                        usuario.getAuthorities());
-                user.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                SecurityContextHolder.getContext().setAuthentication(user);
+            if (isValid) {
+                String userLogin = jwtService.getUserLogin(token);
+                UserDetails user = userService.loadUserByUsername(userLogin);
+                UsernamePasswordAuthenticationToken userAuthToken = new UsernamePasswordAuthenticationToken(user,
+                        null,
+                        user.getAuthorities());
+                userAuthToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(userAuthToken);
             }
         }
 
